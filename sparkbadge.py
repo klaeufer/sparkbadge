@@ -3,8 +3,10 @@
 from flask import Flask
 app = Flask(__name__)
 
-from flask import redirect
+from flask import redirect, make_response
 from quickchart import QuickChart
+import requests
+import random
 
 @app.route('/')
 def hello():
@@ -12,6 +14,7 @@ def hello():
 
 @app.route('/<int:z>/<int:x>/<int:y>')
 def quickchart_proxy(x, y, z):
+
     qc = QuickChart()
     qc.width = 50
     qc.height = 25
@@ -20,8 +23,14 @@ def quickchart_proxy(x, y, z):
         "type": "sparkline",
         "data": {
             "datasets": [{
-                "data": [x, y, z]
+                "data": random.sample(range(10, 30), 5)
             }]
         }
     }
-    return redirect(qc.get_short_url())
+
+    req = requests.get(qc.get_short_url())
+    res = make_response(req.content)
+    res.headers.set('Content-Type', 'image/png')
+    res.headers.set('Cache-Control', 'no-cache')
+
+    return res
