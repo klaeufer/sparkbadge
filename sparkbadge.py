@@ -24,4 +24,4 @@ def quickchart_proxy(x, y, z):
             }]
         }
     }
-    return redirect(qc.get_url())
+    return redirect(qc.get_short_url())
