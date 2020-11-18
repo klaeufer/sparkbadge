@@ -13,9 +13,9 @@ def hello():
 @app.route('/<int:z>/<int:x>/<int:y>')
 def quickchart_proxy(x, y, z):
     qc = QuickChart()
-    qc.width = 500
-    qc.height = 300
-    qc.device_pixel_ratio = 2.0
+    qc.width = 100
+    qc.height = 50
+    #qc.device_pixel_ratio = 2.0
     qc.config = {
         "type": "bar",
         "data": {
