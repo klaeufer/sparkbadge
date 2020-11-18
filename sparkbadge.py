@@ -13,8 +13,8 @@ def hello():
 @app.route('/<int:z>/<int:x>/<int:y>')
 def quickchart_proxy(x, y, z):
     qc = QuickChart()
-    qc.width = 100
-    qc.height = 50
+    qc.width = 50
+    qc.height = 25
     #qc.device_pixel_ratio = 2.0
     qc.config = {
         "type": "sparkline",
