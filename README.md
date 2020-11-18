@@ -1,4 +1,4 @@
-# Overview
+# Vision
 
 Longitudinal status badges for your projects.
 
