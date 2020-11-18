@@ -17,9 +17,8 @@ def quickchart_proxy(x, y, z):
     qc.height = 50
     #qc.device_pixel_ratio = 2.0
     qc.config = {
-        "type": "bar",
+        "type": "sparkline",
         "data": {
-            "labels": ["x", "y", "z"],
             "datasets": [{
                 "label": "Foo",
                 "data": [x, y, z]
