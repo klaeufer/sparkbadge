@@ -20,7 +20,6 @@ def quickchart_proxy(x, y, z):
         "type": "sparkline",
         "data": {
             "datasets": [{
-                "label": "Foo",
                 "data": [x, y, z]
             }]
         }
