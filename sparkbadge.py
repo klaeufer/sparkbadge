@@ -12,8 +12,8 @@ import random
 def hello():
     return "Hello and welcome to SparkBadge!"
 
-@app.route('/<int:z>/<int:x>/<int:y>')
-def quickchart_proxy(x, y, z):
+@app.route('/random')
+def sparkline_random():
 
     qc = QuickChart()
     qc.width = 50
