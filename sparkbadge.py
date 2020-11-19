@@ -15,6 +15,7 @@ def hello():
 @app.route('/random')
 def sparkline_random():
 
+    # generate image for badge
     qc = QuickChart()
     qc.width = 50
     qc.height = 25
@@ -27,12 +28,12 @@ def sparkline_random():
             }]
         }
     }
+    badge = requests.get(qc.get_short_url()).content
 
-    req = requests.get(qc.get_short_url())
-    res = make_response(req.content)
+    # serve image with suitable cache control headers
+    res = make_response(badge)
     res.headers.set('Content-Type', 'image/png')
     res.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
     res.headers.set('Pragma', 'no-cache')
     res.headers.set('Expires', '0')
-
     return res
