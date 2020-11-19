@@ -31,6 +31,8 @@ def sparkline_random():
     req = requests.get(qc.get_short_url())
     res = make_response(req.content)
     res.headers.set('Content-Type', 'image/png')
-    res.headers.set('Cache-Control', 'no-cache')
+    res.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
+    res.headers.set('Pragma', 'no-cache')
+    res.headers.set('Expires', '0')
 
     return res
