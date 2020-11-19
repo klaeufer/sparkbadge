@@ -17,7 +17,7 @@ def sparkline_random():
 
     # generate image for badge
     qc = QuickChart()
-    qc.width = 50
+    qc.width = 75
     qc.height = 25
     #qc.device_pixel_ratio = 2.0
     qc.config = {
