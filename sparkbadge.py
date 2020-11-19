@@ -23,7 +23,7 @@ def sparkline_random():
         "type": "sparkline",
         "data": {
             "datasets": [{
-                "data": random.sample(range(10, 30), 5)
+                "data": random.sample(range(10, 30), 10)
             }]
         }
     }
