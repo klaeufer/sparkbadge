@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 from flask import Flask, make_response
-from actions import sparkline_random
+import badges
+import data
 
 app = Flask(__name__)
 
@@ -11,4 +12,8 @@ def hello():
 
 @app.route('/random')
 def random():
-    return sparkline_random()
+    return badges.sparkline_reverse(data.random())
+
+@app.route('/travis/<user>/<repo>')
+def travis(user, repo):
+    return badges.sparkline_reverse(data.travis(user, repo))

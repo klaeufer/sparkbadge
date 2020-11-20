@@ -3,7 +3,6 @@
 from flask import make_response
 from quickchart import QuickChart
 import requests
-import random
 
 def sparkline(data):
     # generate image for badge
@@ -29,5 +28,6 @@ def sparkline(data):
     res.headers.set('Expires', '0')
     return res
 
-def sparkline_random():
-    return sparkline(random.sample(range(10, 30), 10))
+def sparkline_reverse(data):
+    data.reverse()
+    return sparkline(data)
