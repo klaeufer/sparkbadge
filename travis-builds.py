@@ -4,9 +4,9 @@
 # https://docs.travis-ci.com/api/?http#builds
 
 import sys
-import actions
+import data
 
 user = sys.argv[1]
 repo = sys.argv[2]
 
-print(actions.travis(user, repo))
+print(data.travis(user, repo))
