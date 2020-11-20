@@ -8,4 +8,4 @@ Longitudinal status badges for your projects.
 
 - Travis build status (last few actual values, high = success, low = failure): [![Travis Build Status Data](https://sparkbadge.herokuapp.com/travis/LoyolaChicagoCode/simpleimperative-algebraic-scala)](https://travis-ci.org/LoyolaChicagoCode/simpleimperative-algebraic-scala/builds)
 
-In case you see broken image symbols, please wait about 10 seconds for the web service to wake up, then reload this page.
+*In case you see broken image symbols, please wait about 10 seconds for the web service to wake up, then reload this page.*
