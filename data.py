@@ -7,6 +7,9 @@ import json
 def sample():
     return random.sample(range(10, 30), 10)
 
+# Travis API doc
+# https://docs.travis-ci.com/api/?http#builds
+
 travis_base = "https://api.travis-ci.org/repos/"
 travis_status_map = {None: -1, 0: 0}
 

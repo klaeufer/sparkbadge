@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-# Travis API doc
-# https://docs.travis-ci.com/api/?http#builds
-
 import sys
 import data
 
