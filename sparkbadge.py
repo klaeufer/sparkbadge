@@ -12,7 +12,7 @@ def hello():
 
 @app.route('/random')
 def random():
-    return badges.sparkline_reverse(data.random())
+    return badges.sparkline_reverse(data.sample())
 
 @app.route('/travis/<user>/<repo>')
 def travis(user, repo):

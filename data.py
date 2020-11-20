@@ -4,7 +4,7 @@ import requests
 import random
 import json
 
-def random():
+def sample():
     return random.sample(range(10, 30), 10)
 
 travis_base = "https://api.travis-ci.org/repos/"
