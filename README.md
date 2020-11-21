@@ -1,3 +1,17 @@
+# Project metrics
+
+- In-process
+![Commit Activity](https://img.shields.io/github/commit-activity/m/klaeufer/sparkbadge)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/klaeufer/sparkbadge.svg)](http://isitmaintained.com/project/klaeufer/sparkbadge "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/klaeufer/sparkbadge.svg)](http://isitmaintained.com/project/klaeufer/sparkbadge "Percentage of issues still open")
+- Complexity
+![Code Size](https://img.shields.io/github/languages/code-size/klaeufer/sparkbadge)
+
+- Availability
+[![7-day Uptime Heroku](https://img.shields.io/uptimerobot/ratio/7/m786448003-d517188383140f5309a2edc2)](https://sparkbadge.herokuapp.com/)
+- Other
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+
 # Vision
 
 Longitudinal status badges for your projects.
