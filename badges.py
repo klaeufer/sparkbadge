@@ -18,7 +18,8 @@ def sparkline(data):
             }]
         }
     }
-    badge = requests.get(qc.get_short_url()).content
+    url = qc.get_short_url()
+    badge = requests.get(url).content
 
     # serve image with suitable cache control headers
     res = make_response(badge)
