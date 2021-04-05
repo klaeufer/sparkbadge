@@ -32,7 +32,7 @@ def get_commit_sha(user: str, repo: str, until_time: str) -> str:
     result = requests.get(url)
     data = json.loads(result.text)
     sha = ""
-    if "API rate limit exceeded" not in data and "{\"message\":\"Not Found\"" not in data:
+    if "API rate limit exceeded" not in str(data) and "{\"message\":\"Not Found\"" not in str(data):
         with open('data.json', 'w') as json_file:
             json.dump(data, json_file)
         i = 0
@@ -51,22 +51,17 @@ def get_size(user: str, repo: str, sha: str):
     url = '/'.join([git_api_base, user, repo, "git/trees", sha])
     result = requests.get(url)
     data = json.loads(result.text)
-    if "API rate limit exceeded" not in data and "{\"message\":\"Not Found\"" not in data:
+    total_size = 0
+    if "API rate limit exceeded" not in str(data) and "{\"message\":\"Not Found\"" not in str(data):
         with open('size.json', 'w') as json_file:
             json.dump(data, json_file)
-    if "API rate limit exceeded" in data or "{\"message\":\"Not Found\"" in data:
-        with open('size.json', 'r') as file:
-            lines = file.readlines()
-            # data = json.loads(lines)
-        total_size = 0
-        data = json.loads(lines[0])
-        print(data['tree'][0]['size'])
-        print(data)
+        data = json.loads(result.text)
         for i in data['tree']:
             total_size += i['size']
     else:
-        data = json.loads(result.text)
-        total_size = 0
+        with open('size.json', 'r') as file:
+            lines = file.readlines()
+        data = json.loads(lines[0])
         for i in data['tree']:
             total_size += i['size']
     return total_size
@@ -75,7 +70,7 @@ def get_size(user: str, repo: str, sha: str):
 def repo_size(user: str, repo: str):
     data_points = []
     for day in range(20, 31):
-        time = "2021-04-" + str(day) + "T00:00:00Z"
+        time = "2020-11-" + str(day) + "T00:00:00Z"
         commit_sha = get_commit_sha(user=user, repo=repo, until_time=time)
         data_points.append(get_size(user=user, repo=repo, sha=commit_sha))
     if len(data_points):
