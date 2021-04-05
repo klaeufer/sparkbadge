@@ -17,5 +17,5 @@ def plot(data_points: list, height: int = 38, width: int = 95, top_margin: int =
     fig.update_layout(annotations=[], overwrite=True)
     fig.update_layout(showlegend=False, plot_bgcolor="white",
                       margin=dict(t=top_margin, l=left_margin, b=bottom_margin, r=right_margin))
+    fig.write_image("images/repo_size.png")
     pl.offline.plot(fig, filename=output_file + '.html', config=dict(displayModeBar=False), auto_open=auto_open)
-    imgkit.from_file(output_file + '.html', output_file + '.png')
