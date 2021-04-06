@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import os
-
 from plot import plot
 import requests
 import random
