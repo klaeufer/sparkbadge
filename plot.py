@@ -1,7 +1,6 @@
 import plotly.express as px
 import plotly as pl
 import pandas as pd
-import imgkit
 
 
 def plot(data_points: list, height: int = 38, width: int = 95, top_margin: int = 0,
