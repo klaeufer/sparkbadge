@@ -25,53 +25,75 @@ def travis(user, repo):
     return [travis_status_map[s['result']] for s in data]
 
 
-def get_commit_sha(user: str, repo: str, until_time: str) -> str:
+def get_commit_sha(user: str, repo: str, until_date: str) -> list:
     url = '/'.join([git_api_base, user, repo, "commits"])
     result = requests.get(url)
     data = json.loads(result.text)
-    sha = ""
+    shas = []
+    dates = []
+    time = "T00:00:00Z"
     if "API rate limit exceeded" not in str(data) and "{\"message\":\"Not Found\"" not in str(data):
         with open('data.json', 'w') as json_file:
             json.dump(data, json_file)
-        i = 0
-        found = False
-        while i < len(data) and not found:
-            i_date = data[i]['commit']['author']['date']
-            i_sha = data[i]['sha']
-            if i_date < until_time:
-                sha = i_sha
-                found = True
-            i += 1
-    return sha
-
-
-def get_size(user: str, repo: str, sha: str):
-    url = '/'.join([git_api_base, user, repo, "git/trees", sha])
-    result = requests.get(url)
-    data = json.loads(result.text)
-    total_size = 0
-    if "API rate limit exceeded" not in str(data) and "{\"message\":\"Not Found\"" not in str(data):
-        with open('size.json', 'w') as json_file:
-            json.dump(data, json_file)
-        data = json.loads(result.text)
-        for i in data['tree']:
-            total_size += i['size']
     else:
-        with open('size.json', 'r') as file:
+        with open('data.json', 'r') as file:
             lines = file.readlines()
         data = json.loads(lines[0])
-        for i in data['tree']:
-            total_size += i['size']
-    return total_size
+    until_date = until_date.split('T')[0].split('-')
+    for i in data:
+        date = i['commit']['author']['date']
+        end = '-'.join(until_date) + time
+        if date >= end:
+            sha = i['sha']
+            shas.append(sha)
+            dates.append(date)
+    return [shas, dates]
+
+
+def get_size(user: str, repo: str, shas: list, dates: list):
+    total_sizes = []
+    size = 0
+    for sha in shas:
+        url = '/'.join([git_api_base, user, repo, "git/trees", str(sha)])
+        data = None
+        try:
+            result = requests.get(url)
+            data = json.loads(result.text)
+        except:
+            pass
+        if "API rate limit exceeded" not in str(data) and "{\"message\":\"Not Found\"" not in str(data):
+            print('api')
+            with open('size.json', 'w') as json_file:
+                json.dump(data, json_file)
+        else:
+            with open('size.json', 'r') as file:
+                lines = file.readlines()
+            data = json.loads(lines[0])
+        if 'tree' in data.keys():
+            for i in data['tree']:
+                if 'size' in i.keys():
+                    size += i['size']
+            total_sizes.append(size)
+    s_date = dates[0]
+    counts = []
+    count = 0
+    for sha, date, size in zip(shas, dates, total_sizes):
+        if date[:10] == s_date[:10]:
+            count += size
+        else:
+            counts.append(count)
+            count = size
+            s_date = date
+    for i in range(len(counts)):
+        if i-1 >= 0:
+            counts[i] += counts[i-1]
+    return counts
 
 
 def repo_size(user: str, repo: str):
-    data_points = []
-    for day in range(20, 31):
-        time = "2020-11-" + str(day) + "T00:00:00Z"
-        commit_sha = get_commit_sha(user=user, repo=repo, until_time=time)
-        data_points.append(get_size(user=user, repo=repo, sha=commit_sha))
-    if len(data_points):
+    result = get_commit_sha(user=user, repo=repo,  until_date="2020-11-18")
+    data_points = get_size(user=user, repo=repo, shas=result[0], dates=result[1])
+    if len(data_points) > 0:
         plot(data_points=data_points, output_file="images/repo_size")
     return data_points
 
