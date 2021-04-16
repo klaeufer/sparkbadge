@@ -64,7 +64,7 @@ def get_commits_sizes(user: str, repo: str, shas: list) -> list:
         if "API rate limit exceeded" not in str(data) and "{\"message\":\"Not Found\"" not in str(data):
             with open('size.json', 'w') as json_file:
                 json.dump(data, json_file)
-        if True:  # else:
+        else:
             with open('size.json', 'r') as file:
                 lines = file.readlines()
             data = json.loads(lines[0])
