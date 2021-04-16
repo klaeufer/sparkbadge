@@ -50,8 +50,8 @@ def get_commit_sha(user: str, repo: str, until_date: str) -> list:
     return [shas, dates]
 
 
-def get_size(user: str, repo: str, shas: list, dates: list):
-    total_sizes = []
+def get_commits_sizes(user: str, repo: str, shas: list) -> list:
+    commits_sizes = []
     size = 0
     for sha in shas:
         url = '/'.join([git_api_base, user, repo, "git/trees", str(sha)])
@@ -62,10 +62,9 @@ def get_size(user: str, repo: str, shas: list, dates: list):
         except:
             pass
         if "API rate limit exceeded" not in str(data) and "{\"message\":\"Not Found\"" not in str(data):
-            print('api')
             with open('size.json', 'w') as json_file:
                 json.dump(data, json_file)
-        else:
+        if True:  # else:
             with open('size.json', 'r') as file:
                 lines = file.readlines()
             data = json.loads(lines[0])
@@ -73,27 +72,32 @@ def get_size(user: str, repo: str, shas: list, dates: list):
             for i in data['tree']:
                 if 'size' in i.keys():
                     size += i['size']
-            total_sizes.append(size)
-    s_date = dates[0]
-    counts = []
-    count = 0
-    for sha, date, size in zip(shas, dates, total_sizes):
-        if date[:10] == s_date[:10]:
-            count += size
+            commits_sizes.append(size)
+    return commits_sizes
+
+
+def get_data_points(shas, dates, commits_sizes) -> list:
+    date_holder = dates[0]
+    data_points = []
+    data_point = 0
+    for sha, date, size in zip(shas, dates, commits_sizes):
+        if date[:10] == date_holder[:10]:
+            data_point += size
         else:
-            counts.append(count)
-            count = size
-            s_date = date
-    for i in range(len(counts)):
+            data_points.append(data_point)
+            data_point = size
+            date_holder = date
+    for i in range(len(data_points)):
         if i-1 >= 0:
-            counts[i] += counts[i-1]
-    return counts
+            data_points[i] += data_points[i-1]
+    return data_points
 
 
-def repo_size(user: str, repo: str):
+def repo_size(user: str, repo: str) -> list:
     result = get_commit_sha(user=user, repo=repo,  until_date="2020-11-18")
-    data_points = get_size(user=user, repo=repo, shas=result[0], dates=result[1])
-    if len(data_points) > 0:
+    commits_sizes = get_commits_sizes(user=user, repo=repo, shas=result[0])
+    data_points = get_data_points(shas=result[0], dates=result[1], commits_sizes=commits_sizes)
+    if len(data_points) > 1:
         plot(data_points=data_points, output_file="images/repo_size")
     return data_points
 
