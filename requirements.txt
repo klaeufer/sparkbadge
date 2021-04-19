@@ -1,9 +1,12 @@
 Click==7.0
-Flask==1.1.1
+Flask~=1.1.1
 gunicorn==20.0.4
 itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
 quickchart.io==0.1.1
-requests==2.25.0
+requests~=2.25.0
 Werkzeug==1.0.0
+plotly~=4.14.3
+pandas~=1.2.3
+imgkit~=1.1.0
