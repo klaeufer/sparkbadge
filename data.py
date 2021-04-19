@@ -84,7 +84,7 @@ def get_data_points(shas, dates, commits_sizes) -> list:
     return data_points
 
 
-def repo_size(user: str, repo: str, until_date) -> list:
+def repository_size(user: str, repo: str, until_date) -> list:
     results = get_commit_sha(user=user, repo=repo, until_date=until_date)
     data_points = []
     if len(results[0]):
@@ -96,4 +96,4 @@ def repo_size(user: str, repo: str, until_date) -> list:
     return data_points
 
 
-repo_size(user="Landaluce", repo="sparkbadge", until_date="2020-11-18")
+repository_size(user="Landaluce", repo="sparkbadge", until_date="2020-11-18")

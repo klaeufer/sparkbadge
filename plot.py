@@ -15,4 +15,4 @@ def plot(data_points: list, height: int = 38, width: int = 95, top_margin: int =
     fig.update_layout(annotations=[], overwrite=True)
     fig.update_layout(showlegend=False, plot_bgcolor="white",
                       margin=dict(t=top_margin, l=left_margin, b=bottom_margin, r=right_margin))
-    fig.write_image("images/repo_size.png")
+    fig.write_image("images/repository_size.png")
