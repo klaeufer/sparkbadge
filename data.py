@@ -92,7 +92,7 @@ def repo_size(user: str, repo: str) -> list:
         if len(results[1]):
             data_points = get_data_points(shas=results[0], dates=results[1], commits_sizes=commits_sizes)
             if len(data_points) > 1:
-                plot(data_points=data_points, output_file="images/repo_size")
+                plot(data_points=data_points)
     return data_points
 
 
