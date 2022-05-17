@@ -6,7 +6,7 @@
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/klaeufer/sparkbadge.svg)](http://isitmaintained.com/project/klaeufer/sparkbadge "Percentage of issues still open")
 - Complexity
 ![Code Size](https://img.shields.io/github/languages/code-size/klaeufer/sparkbadge)
-[![Requirements Status](https://requires.io/github/klaeufer/sparkbadge/requirements.svg?branch=master)](https://requires.io/github/klaeufer/sparkbadge/requirements/?branch=master)
+[![Requirements Status](https://requires.io/github/klaeufer/sparkbadge/requirements.svg?branch=main)](https://requires.io/github/klaeufer/sparkbadge/requirements/?branch=main)
 - Availability
 [![7-day Uptime Heroku](https://img.shields.io/uptimerobot/ratio/7/m786448003-d517188383140f5309a2edc2)](https://sparkbadge.herokuapp.com/)
 - Other
