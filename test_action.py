@@ -22,5 +22,5 @@ if not os.path.exists(spark_dir):
 
 print(f'DIR: {spark_dir}')
 print(f'FILE: {file_name}')
-# with open(file_name, 'w') as f:
-#     f.write(test_badge)
+with open(file_name, 'w') as f:
+    f.write(test_badge)
