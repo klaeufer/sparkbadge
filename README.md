@@ -35,3 +35,9 @@ options:
 ## Development Roadmap
 
 Check out the [project outline](docs/outline.md) to learn more.
+
+## Test Action
+
+*Remove later, for testing purposes only!*
+
+![Test Badge](.sparkbadge/test_badge.svg)
