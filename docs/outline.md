@@ -10,8 +10,7 @@
 
 ```
 usage: sparkbadge [-h] [-o OWNER] [-r REPO]
-                  [-s {histogram,bargraph,scatterplot}]
-                  [-m {loc,coverage,deps,commits,issues,pr,wf_runs}] [-d DIR]
+                  [-s {loc,coverage,deps,commits,issues,pr,wf_runs}] [-d DIR]
 
 Generate sparklines for your status badge.
 
@@ -20,10 +19,8 @@ options:
   -o OWNER, --owner OWNER
                         The repository owner.
   -r REPO, --repo REPO  The repository.
-  -s {histogram,bargraph,scatterplot}, --sparkline {histogram,bargraph,scatterplot}
+  -s {loc,coverage,deps,commits,issues,pr,wf_runs}, --sparkline {loc,coverage,deps,commits,issues,pr,wf_runs}
                         The sparkline to use.
-  -m {loc,coverage,deps,commits,issues,pr,wf_runs}, --metrics {loc,coverage,deps,commits,issues,pr,wf_runs}
-                        The metrics to create.
   -d DIR, --dir DIR     The directory to store sparkbadges. Default is
                         .sparkbadge/
 ```

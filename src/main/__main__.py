@@ -16,15 +16,6 @@ def main():
         '-s',
         '--sparkline',
         choices=[
-            'histogram', 
-            'bargraph', 
-            'scatterplot'
-        ],
-        help='The sparkline to use.')
-    parser.add_argument(
-        '-m',
-        '--metrics',
-        choices=[
             # Code quality metrics
             'loc', 
             'coverage', 
@@ -36,10 +27,11 @@ def main():
             # CI server metrics
             'wf_runs', 
         ],
-        help='The metrics to create.')
+        help='The sparkline to use.')
     parser.add_argument(
         '-d',
         '--dir',
+        default=".sparkbadge",
         help='The directory to store sparkbadges. Default is .sparkbadge/')
 
     args = parser.parse_args()
