@@ -14,7 +14,6 @@ The sparkline SVGs you create can then be implemented in a badge using a tool su
 Sparkbadges was heavily influenced and inspired by [google/pybadges](https://github.com/google/pybadges) and the aesthetics of the [Shields.io](https://github.com/badges/shields) project.
 
 
-## Usage 
+## Development Roadmap
 
-
-*In case you see broken image symbols, please wait about 10 seconds for the web service to wake up, then reload this page.*
+Check out the [project outline](docs/outline.md) to learn more.

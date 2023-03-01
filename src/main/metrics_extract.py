@@ -1,6 +1,7 @@
 import datetime
 import requests
 import numpy as np
+import typing
 
 # Github Actions: workflow runs
 def actions_runs(owner, repo):
@@ -84,4 +85,4 @@ def build_duration(utc):
     ut = dt.timestamp()
     return ut
 
-#iss = issues('nshan651', 'excite-cli')
+# iss = issues('nshan651', 'excite-cli')
