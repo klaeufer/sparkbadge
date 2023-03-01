@@ -23,4 +23,4 @@
 
 ## Diagram
 
-![Diagram](docs/diagram.svg)
+![Diagram](diagram.svg)
