@@ -15,7 +15,7 @@ color = random.choice(colors)
 test_badge = badge(left_text='coverage', right_text='23%', right_color=color)
 
 spark_dir = join(dirname(__file__), '.sparkbadge')
-file_name = join(dirname(__file__), '.sparkbadge/test_badge.svg')
+file_name = join(dirname(__file__), '.sparkbadge/test_badge2.svg')
 
 if not os.path.exists(spark_dir):
     os.makedirs(spark_dir)

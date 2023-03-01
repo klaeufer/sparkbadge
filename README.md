@@ -42,3 +42,4 @@ Check out the [project outline](docs/outline.md) to learn more.
 *Remove later, for testing purposes only!*
 
 ![Test Badge](.sparkbadge/test_badge.svg)
+![Test Badge](.sparkbadge/test_badge2.svg)
