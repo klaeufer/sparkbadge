@@ -17,4 +17,5 @@ jobs:
         pip install pybadges
     - name: Generate badge
       run: |
-        python test_action.py
+        # python test_action.py
+        ./test_action.py

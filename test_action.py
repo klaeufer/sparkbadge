@@ -20,5 +20,7 @@ file_name = join(dirname(__file__), '.sparkbadge/test_badge2.svg')
 if not os.path.exists(spark_dir):
     os.makedirs(spark_dir)
 
-with open(file_name, 'w') as f:
-    f.write(test_badge)
+print(f'DIR: {spark_dir}')
+print(f'FILE: {file_name}')
+# with open(file_name, 'w') as f:
+#     f.write(test_badge)
