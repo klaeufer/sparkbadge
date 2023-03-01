@@ -6,6 +6,28 @@
 2) CI servers (Actions, GitLab CI, Circle, Travis, etc.
 3) App/Protocol (Handles the SVG creation)
 
+## CLI Usage
+
+```
+usage: sparkbadge [-h] [-o OWNER] [-r REPO]
+                  [-s {histogram,bargraph,scatterplot}]
+                  [-m {loc,coverage,deps,commits,issues,pr,wf_runs}] [-d DIR]
+
+Generate sparklines for your status badge.
+
+options:
+  -h, --help            show this help message and exit
+  -o OWNER, --owner OWNER
+                        The repository owner.
+  -r REPO, --repo REPO  The repository.
+  -s {histogram,bargraph,scatterplot}, --sparkline {histogram,bargraph,scatterplot}
+                        The sparkline to use.
+  -m {loc,coverage,deps,commits,issues,pr,wf_runs}, --metrics {loc,coverage,deps,commits,issues,pr,wf_runs}
+                        The metrics to create.
+  -d DIR, --dir DIR     The directory to store sparkbadges. Default is
+                        .sparkbadge/
+```
+
 - Protocol spec:
     - Our API should be able to handle the above layers interchangeably 
     - Should allow for easy creation of new longitudinal metrics
