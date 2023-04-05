@@ -2,37 +2,45 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(
-        'sparkbadge',
-        description='Generate sparklines for your status badge.')
+        "sparkbadge",
+        description="Generate sparklines for your status badge.")
     parser.add_argument(
-        '-o',
-        '--owner',
-        help='The repository owner.')
+        "-t",
+        "--timeframe",
+        default="full",
+        help=("The timeframe to create sparklines over, inclusive. "
+            " Format (start year to end year) is \"YYYY-YYYY\"."
+            " An example input would be \"--timeframe 2017-2020\"."
+            " Currently only years are supported."))
     parser.add_argument(
-        '-r',
-        '--repo',
-        help='The repository.')
-    parser.add_argument(
-        '-s',
-        '--sparkline',
+        "-s",
+        "--sparkline",
         choices=[
             # Code quality metrics
-            'loc', 
-            'coverage', 
-            'deps', 
+            "loc", 
+            "coverage", 
+            "deps", 
             # Project activity metrics
-            'commits',
-            'issues',
-            'pr',
+            "commits",
+            "issues",
+            "pr",
             # CI server metrics
-            'wf_runs', 
+            "wf_runs", 
         ],
-        help='The sparkline to use.')
+        help="The sparkline to use.")
     parser.add_argument(
-        '-d',
-        '--dir',
+        "-d",
+        "--dir",
         default=".sparkbadge",
-        help='The directory to store sparkbadges. Default is .sparkbadge/')
+        help="The directory to store sparkbadges. Default is .sparkbadge/")
+    parser.add_argument(
+        "-o",
+        "--owner",
+        help="The repository owner.")
+    parser.add_argument(
+        "-r",
+        "--repo",
+        help="The repository.")
 
     args = parser.parse_args()
 
