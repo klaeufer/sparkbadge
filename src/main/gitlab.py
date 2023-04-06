@@ -7,10 +7,12 @@ def gitlab_jobs():
     https://gitlab.com/api/v4/projects/{project_id}/jobs
     https://gitlab.com/gitlab-org/gitlab
     """
-    url = "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/jobs"
+    # url = "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/jobs"
+    url = "https://gitlab.com/api/v4/projects/gitlab-org/gitlab/jobs"
     payload = api.connect_to_endpoint(url=url, params={})
 
     print(payload)
 
     # for iid in payload["iid"]:
     #     print(iid)
+gitlab_jobs()

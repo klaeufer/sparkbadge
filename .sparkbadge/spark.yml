@@ -1,0 +1,48 @@
+# === Sparkbadge Config ===
+
+# Describe parameters 
+meta:
+  base_url:
+  uep: "facebook/react"
+  per_page: "" 
+
+# Input params
+input:
+  github:
+    commits:
+      until: ""
+      since: ""
+    issues:
+    runs:
+  gitlab:
+    commits:
+      until: ""
+      since: ""
+    issues:
+    runs:
+
+# Output params
+output:
+  github:
+    commits:
+      id: "sha"
+      params:
+        authored_date: "commit.author.date"
+        committed_date: "commit.committer.date"
+        verified: "commit.verification.verified"
+    issues:
+      created_date: "created_at"
+      closed_date: "closed_at"
+      state: "state"
+    runs:
+      created_date: "created_at"
+      conclusion: "conclusion"
+  gitlab:
+    commits:
+      id: "id"
+      authored_date: "authored_date"
+      committed_date: "committed_date"
+    issues:
+    runs:
+
+
