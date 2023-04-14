@@ -63,24 +63,20 @@ def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
     params = author_test.split(".")
     print(params)
 
-    # Create a nested dictionary access from the list of keys
-    # unpacked = lambda keys: reduce(
-    #     lambda nested_dict, key: nested_dict.setdefault(key, {}),
-    #     keys,
-    #     {}
-    # )
-    # unpacked_params = unpacked(params)
-    # print(unpacked_params)
-
     data = {
         "commit": {
             "author": {
                 "date": "2023-04-06"
+            },
+            "committer": {
+                "date": "2022-08-17"
+            },
+            "verification": {
+                "verified": True
             }
         }
     }
 
-    # result = reduce(lambda d, k: d[k], params, data)
     result = reduce(lambda d, k: d[k] 
         if isinstance(d, dict) 
         else d, params, data
