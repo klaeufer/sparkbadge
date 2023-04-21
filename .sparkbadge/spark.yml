@@ -1,28 +1,13 @@
 # === Sparkbadge Config ===
 
 # Describe parameters 
-meta:
+config:
   base_url:
   uep: "facebook/react"
   per_page: "" 
 
-# Input params
-input:
-  github:
-    commits:
-      until: ""
-      since: ""
-    issues:
-    runs:
-  gitlab:
-    commits:
-      until: ""
-      since: ""
-    issues:
-    runs:
-
 # Output params
-output:
+metrics:
   github:
     commits:
       id: "sha"
@@ -40,8 +25,9 @@ output:
   gitlab:
     commits:
       id: "id"
-      authored_date: "authored_date"
-      committed_date: "committed_date"
+      params:
+        authored_date: "authored_date"
+        committed_date: "committed_date"
     issues:
     runs:
 

@@ -1,18 +1,12 @@
+from os import walk
 from os.path import join, dirname
-from typing import Dict 
-from functools import reduce
+from typing import Dict, Callable
+from functools import reduce 
 import api
 import yaml
 
-"""
-1. Detect source forge (github or gitlab)
-2. Detect any API tokens
-3. Read json hierarchical structure from sparkbadge.yml
-"""
-
 def recurse_json(data, targets):
-    """
-    Recursively scan a nested JSON object for certain keys.
+    """Recursively scan a nested JSON object for certain keys.
 
     Args:
         json_obj (dict): The JSON object to scan.
@@ -38,13 +32,30 @@ def recurse_json(data, targets):
     return results
 
 
+"""Generator that makes a lambda which recurses through a nested dict object.
+
+Args:
+    param_dict: The list of 
+
+"""
+def make_expand(metric_shortcode:str, entry:dict) -> Callable:
+    keys = metric_shortcode.split(".")
+    return lambda: reduce(
+        lambda d, k: d[k] 
+        if isinstance(d, dict) else d,
+        keys,
+        entry 
+    )
+
+
+def make_params(metric_params:dict, entry:dict):
+    return lambda: {
+        mt: make_expand(metric_params[mt], entry)()
+        for mt in metric_params
+    }
+            
+
 def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
-
-    # TODO: Load config
-
-    # TODO: Parse forge
-
-    # TODO: Do some stuff to format input...
 
     # Conenct to endpoint and get the payload body
     # url = "some url"
@@ -55,15 +66,24 @@ def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
     with open(spark_dir + "/" + config, 'r') as file:
         cfg = file.read()
     meta = yaml.safe_load(cfg)
-    metric = meta["output"][source][metric_type] 
+    metric = meta["metrics"][source][metric_type] 
 
-    author_test = metric["params"]["authored_date"]
-    print(author_test)
-    # Get the nested dictionary key from the string
-    params = author_test.split(".")
-    print(params)
 
-    data = {
+    # output = {}
+    output = [] 
+    for entry in payload:
+        inst = {}
+        key = entry[metric["id"]]
+        params = make_params(metric["params"], entry)()
+
+        output.append({key: params})
+    print(f"output is: {output}")
+
+
+# Github-style response
+payload = [
+    {
+        "sha" : 700,
         "commit": {
             "author": {
                 "date": "2023-04-06"
@@ -75,24 +95,41 @@ def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
                 "verified": True
             }
         }
-    }
+    },
+    {
+        "sha" : 1625,
+        "commit": {
+            "author": {
+                "date": "2023-04-06"
+            },
+            "committer": {
+                "date": "2022-08-17"
+            },
+            "verification": {
+                "verified": False 
+            }
+        }
+    },
+]
 
-    result = reduce(lambda d, k: d[k] 
-        if isinstance(d, dict) 
-        else d, params, data
-    )
-    print(result)
-
-    # result = data
-    # for key in keys:
-    #     result = result[key]
-    # print(result)
-
-
-
+# Gitlab-style response
+# payload = [
+#     {
+#         "id" : 700,
+#         "authored_date": "2023-04-06",
+#         "committed_date": "2022-08-17",
+#     },
+#     {
+#         "id" : 1625,
+#         "authored_date": "2023-04-06",
+#         "committed_date": "2022-08-17",
+#     },
+# ]
+        
 spark_dir = join(dirname(__file__), "../../.sparkbadge")
 
 sparkbadge("", "", "commits", "github", spark_dir, "spark.yml")
+# sparkbadge("", "", "commits", "gitlab", spark_dir, "spark.yml")
 
 """Example unfolded query
 commit["sha"] : {
@@ -101,20 +138,3 @@ commit["sha"] : {
     "verified" : commit["commit"]["verification"]["verified"]
 } 
 """
-
-
-    # Create a nested dictionary access from the list of keys
-    # result = nested_dict = {}
-    # for key in keys:
-    #     nested_dict[key] = {}
-    #     nested_dict = nested_dict[key]
-
-    # commit_data = lambda commits: {
-        # str(commit["sha"]) : {
-        #     "authored_at": commit["commit"]["author"]["date"], 
-        #     "applied_at": commit["commit"]["committer"]["date"],
-        #     "verified" : commit["commit"]["verification"]["verified"]
-        # } 
-    #     for commit in commits 
-    # }
-
