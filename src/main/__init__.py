@@ -1,44 +1,22 @@
-from os import walk
 from os.path import join, dirname
-from typing import Dict, Callable
+from typing import Dict, Callable, List
 from functools import reduce 
 import api
 import yaml
 
-def recurse_json(data, targets):
-    """Recursively scan a nested JSON object for certain keys.
+def make_unflatten_keys(metric_shortcode: str, entry: dict) -> Callable:
+    """Lambda generator that takes a string and interpolates dict nesting.
 
     Args:
-        json_obj (dict): The JSON object to scan.
-        target_keys (list): A list of strings representing the keys to look for.
+        metric_shortcode: Param name to slice to get at the value.
+        entry: The entry, representing one datapoint in a series of API calls.
 
     Returns:
-        A list of dictionaries, where each dictionary contains information about the
-        location of a target key in the JSON object. Each dictionary has the following keys:
-        - 'key': The name of the target key.
-        - 'value': The value associated with the target key.
-        - 'path': A list of strings representing the path to the target key, in the format
-          ['root_key', 'child_key', 'grandchild_key', ...].
+        A lambda function, which itself returns a string.
+
+    Examples:
+        "commit.author.date" becomes "data[commit][author][date]".
     """
-    results = []
-    for key, value in data.items():
-        if key in targets:
-            results.append({'key': key, 'value': value, 'path': [key]})
-        if isinstance(value, dict):
-            sub_results = recurse_json(value, targets)
-            for sub_result in sub_results:
-                sub_result['path'].insert(0, key)
-                results.append(sub_result)
-    return results
-
-
-"""Generator that makes a lambda which recurses through a nested dict object.
-
-Args:
-    param_dict: The list of 
-
-"""
-def make_expand(metric_shortcode:str, entry:dict) -> Callable:
     keys = metric_shortcode.split(".")
     return lambda: reduce(
         lambda d, k: d[k] 
@@ -48,35 +26,95 @@ def make_expand(metric_shortcode:str, entry:dict) -> Callable:
     )
 
 
-def make_params(metric_params:dict, entry:dict):
+def make_entry_params(metric_params: dict, entry: dict):
+    """Lambda generator that takes a string and interpolates dict nesting.
+
+    Args:
+        metric_params: The list of meta parameters of the metric. 
+        entry: The entry, representing one datapoint in a series of API calls.
+    """
     return lambda: {
-        mt: make_expand(metric_params[mt], entry)()
+        mt: make_unflatten_keys(metric_params[mt], entry)()
         for mt in metric_params
     }
-            
+
+
+def make_output(metric: dict, payload):
+    """Lambda generator that takes a string and interpolates dict nesting.
+
+    Args:
+        metric_shortcode: Param name to slice to get at the value.
+        entry: The entry, representing one datapoint in a series of API calls.
+    """
+    metric_id = metric["id"]
+    metric_params = metric["params"]
+    # return lambda: [
+    #     { entry[metric_id]: make_entry_params(metric_params, entry)() }
+    #     for entry in payload
+    # ]
+
+    locate_params = lambda metric_params, entry: {
+        mt: make_unflatten_keys(metric_params[mt], entry)()
+        for mt in metric_params
+    } 
+
+    return lambda: [
+        { entry[metric_id]: locate_params(metric_params, entry) }
+        for entry in payload
+    ]
+
+
+def build_url(meta: dict, 
+              source: str, 
+              metric_type: str, 
+              uep: str) -> str:
+    """Constructs a url in prep for api calls.
+
+    Args:
+        meta:
+        source:
+        metric_type:
+        uep:
+
+    Returns:
+        The full url to be used in a HTTP GET request.
+
+    Examples:
+        "https://api.github.com/repos/facebook/react/commits"
+        "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/commits"
+    """
+    # Build url
+    base_url = meta["config"][source]["base_url"]
+    url = f"{base_url}/{uep}/"
+    # Add any suffixes if applicable
+    url_suffix = meta["metrics"][source][metric_type]["url_suffix"]
+    if url_suffix:
+        url += url_suffix + "/"
+    # Append metric type
+    url += metric_type
+    return url
+
 
 def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
 
-    # Conenct to endpoint and get the payload body
-    # url = "some url"
-    # params = "some params"
-    # payload = api.connect_to_endpoint(url, params)
-
-    # Load the YAML string into a Python object
+    # Load the spark.yml config 
     with open(spark_dir + "/" + config, 'r') as file:
         cfg = file.read()
     meta = yaml.safe_load(cfg)
+    
+    # Load info about the metric 
     metric = meta["metrics"][source][metric_type] 
 
+    # Construct url and get auth token (if needed)
+    url = build_url(meta, source, metric_type, uep)
+    auth_token = meta["config"][source]["auth_token"]
 
-    # output = {}
-    output = [] 
-    for entry in payload:
-        inst = {}
-        key = entry[metric["id"]]
-        params = make_params(metric["params"], entry)()
+    # HTTP GET request
+    payload = api.connect_to_endpoint(url, {}, auth_token)
 
-        output.append({key: params})
+    # Parse and standardize payload
+    output = make_output(metric, payload)()
+
     print(f"output is: {output}")
 
 
@@ -128,13 +166,12 @@ payload = [
         
 spark_dir = join(dirname(__file__), "../../.sparkbadge")
 
-sparkbadge("", "", "commits", "github", spark_dir, "spark.yml")
+### COMMITS
+sparkbadge("facebook/react", "", "commits", "github", spark_dir, "spark.yml")
 # sparkbadge("", "", "commits", "gitlab", spark_dir, "spark.yml")
 
-"""Example unfolded query
-commit["sha"] : {
-    "authored_at": commit["commit"]["author"]["date"], 
-    "applied_at": commit["commit"]["committer"]["date"],
-    "verified" : commit["commit"]["verification"]["verified"]
-} 
-"""
+### ISSUES
+# sparkbadge("", "", "issues", "github", spark_dir, "spark.yml")
+
+### RUNS
+# sparkbadge("", "", "runs", "github", spark_dir, "spark.yml")
