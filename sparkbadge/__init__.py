@@ -1,8 +1,16 @@
+"""Creates a longitudinal status sparkline as an SVG.
+
+This package creates a longitudinal status graphic, 
+which can then be added to a github-style badge using pybadges or shields.io.
+"""
+
 from os.path import join, dirname
-from typing import Dict, Callable, List
+from typing import Callable
 from functools import reduce 
-import api
 import yaml
+
+from sparkbadge import api
+
 
 def make_unflatten_keys(metric_shortcode: str, entry: dict) -> Callable:
     """Lambda generator that takes a string and interpolates dict nesting.
@@ -15,7 +23,7 @@ def make_unflatten_keys(metric_shortcode: str, entry: dict) -> Callable:
         A lambda function, which itself returns a string.
 
     Examples:
-        "commit.author.date" becomes "data[commit][author][date]".
+        "commit.author.date" becomes VALUE of "data[commit][author][date]".
     """
     keys = metric_shortcode.split(".")
     return lambda: reduce(
@@ -24,19 +32,6 @@ def make_unflatten_keys(metric_shortcode: str, entry: dict) -> Callable:
         keys,
         entry 
     )
-
-
-def make_entry_params(metric_params: dict, entry: dict):
-    """Lambda generator that takes a string and interpolates dict nesting.
-
-    Args:
-        metric_params: The list of meta parameters of the metric. 
-        entry: The entry, representing one datapoint in a series of API calls.
-    """
-    return lambda: {
-        mt: make_unflatten_keys(metric_params[mt], entry)()
-        for mt in metric_params
-    }
 
 
 def make_output(metric: dict, payload):
@@ -48,16 +43,14 @@ def make_output(metric: dict, payload):
     """
     metric_id = metric["id"]
     metric_params = metric["params"]
-    # return lambda: [
-    #     { entry[metric_id]: make_entry_params(metric_params, entry)() }
-    #     for entry in payload
-    # ]
 
+    # Recurse through params and unflatten the values
     locate_params = lambda metric_params, entry: {
         mt: make_unflatten_keys(metric_params[mt], entry)()
         for mt in metric_params
     } 
 
+    # Process each row of data
     return lambda: [
         { entry[metric_id]: locate_params(metric_params, entry) }
         for entry in payload
@@ -71,31 +64,34 @@ def build_url(meta: dict,
     """Constructs a url in prep for api calls.
 
     Args:
-        meta:
-        source:
-        metric_type:
-        uep:
+        meta: The config details and location of metrics.
+        source: The source forge.
+        metric_type: The metric to use.
+        uep: The URL-encoded path.
 
     Returns:
-        The full url to be used in a HTTP GET request.
+        The full URL to be used in a HTTP GET request.
 
     Examples:
         "https://api.github.com/repos/facebook/react/commits"
         "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/commits"
     """
-    # Build url
     base_url = meta["config"][source]["base_url"]
     url = f"{base_url}/{uep}/"
+
     # Add any suffixes if applicable
     url_suffix = meta["metrics"][source][metric_type]["url_suffix"]
     if url_suffix:
         url += url_suffix + "/"
+
     # Append metric type
     url += metric_type
     return url
 
 
 def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
+    """
+    """
 
     # Load the spark.yml config 
     with open(spark_dir + "/" + config, 'r') as file:
@@ -118,60 +114,7 @@ def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
     print(f"output is: {output}")
 
 
-# Github-style response
-payload = [
-    {
-        "sha" : 700,
-        "commit": {
-            "author": {
-                "date": "2023-04-06"
-            },
-            "committer": {
-                "date": "2022-08-17"
-            },
-            "verification": {
-                "verified": True
-            }
-        }
-    },
-    {
-        "sha" : 1625,
-        "commit": {
-            "author": {
-                "date": "2023-04-06"
-            },
-            "committer": {
-                "date": "2022-08-17"
-            },
-            "verification": {
-                "verified": False 
-            }
-        }
-    },
-]
+spark_dir = join(dirname(__file__), "../.sparkbadge")
 
-# Gitlab-style response
-# payload = [
-#     {
-#         "id" : 700,
-#         "authored_date": "2023-04-06",
-#         "committed_date": "2022-08-17",
-#     },
-#     {
-#         "id" : 1625,
-#         "authored_date": "2023-04-06",
-#         "committed_date": "2022-08-17",
-#     },
-# ]
-        
-spark_dir = join(dirname(__file__), "../../.sparkbadge")
-
-### COMMITS
 sparkbadge("facebook/react", "", "commits", "github", spark_dir, "spark.yml")
 # sparkbadge("", "", "commits", "gitlab", spark_dir, "spark.yml")
-
-### ISSUES
-# sparkbadge("", "", "issues", "github", spark_dir, "spark.yml")
-
-### RUNS
-# sparkbadge("", "", "runs", "github", spark_dir, "spark.yml")

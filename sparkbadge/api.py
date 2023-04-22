@@ -6,12 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def read_cfg(spark_dir: str):
-    """Read from the config file.
-    """
-    cfg = join(dirname(__file__), f"{spark_dir}/config.json")
-
-
 def connect_to_endpoint(url: str, 
                         params: Dict[str, Any], 
                         auth_token: Union[str, None]) -> Dict:

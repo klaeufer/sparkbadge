@@ -1,4 +1,12 @@
+"""Output a longitudinal status sparkline as an SVG.
+
+For more information, run:
+$ python3 -m sparkbadge --help
+"""
+
 import argparse
+import sparkbadge
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -21,15 +29,17 @@ def main():
         "--metrics",
         choices=[
             # Code quality metrics
-            "loc", 
-            "coverage", 
-            "deps", 
+            #TODO: "loc", 
+            #TODO:  "coverage", 
+            #TODO:  "deps", 
+
             # Project activity metrics
             "commits",
             "issues",
-            "pr",
+            #TODO: "pr",
+
             # CI server metrics
-            "workflow_runs", 
+            #TODO: "workflow_runs", 
         ],
         help="The sparkline to use.")
     parser.add_argument(
@@ -52,7 +62,8 @@ def main():
     config = "spark.yml"
 
     # Init
-    # sparkbadge(uep, timeframe, metrics, source, spark_dir, config)
+    # sparkbadge.sparkbadge(uep, timeframe, metrics, source, spark_dir, config)
+    sparkbadge.sparkbadge(uep, timeframe, metrics, source, spark_dir, config)
 
 
 if __name__ == "__main__":
