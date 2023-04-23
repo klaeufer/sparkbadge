@@ -78,7 +78,7 @@ The `spark.yml` file is used to standardize data across multiple sources. It "de
 
 If there is hosting service or metric that you feel is missing, no problem! Simply edit the to `spark.yml`.
 
-Documentation on editing `spark.yml` can be found [here](docs/extending-sparkbadge).
+Documentation on editing `spark.yml` can be found [here](./docs/extending-sparkbadge).
 
 
 ## Test Action
