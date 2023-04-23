@@ -63,6 +63,7 @@ def main():
     spark_dir = (args.dir 
                 if parser.get_default("dir") 
                 else join(dirname(__file__), "../.sparkbadge"))
+
     sparkbadge.sparkbadge(uep, 
                           timeframe, 
                           metrics, 

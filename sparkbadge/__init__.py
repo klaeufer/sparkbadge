@@ -5,7 +5,7 @@ which can then be added to a github-style badge using pybadges or shields.io.
 """
 
 from os.path import join, dirname
-from typing import Callable, Optional
+from typing import Callable
 from functools import reduce 
 import yaml
 
@@ -61,7 +61,7 @@ def build_url(meta: dict,
               source: str, 
               metric_type: str, 
               uep: str) -> str:
-    """Constructs a url in prep for api calls.
+    """Constructs a URL in prep for API calls.
 
     Args:
         meta: The config details and location of metrics.
@@ -129,4 +129,4 @@ def sparkbadge(uep: str,
 spark_dir = join(dirname(__file__), "../.sparkbadge")
 
 sparkbadge("facebook/react", "", "commits", "github", spark_dir)
-# sparkbadge("", "", "commits", "gitlab", spark_dir, "spark.yml")
+# sparkbadge("", "", "commits", "gitlab", spark_dir,)

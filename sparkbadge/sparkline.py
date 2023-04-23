@@ -99,7 +99,7 @@ def stacked_bar(samples, labels):
         #canvas.append(draw.Rectangle(10*i, yy1, 10, yy2, fill='purple'))
     '''
 
-    canvas.saveSvg('/home/nick/Downloads/sbar.svg')
+    canvas.saveSvg('/home/nick/dl/sbar.svg')
     #return canvas.asSvg()
 
 
