@@ -6,6 +6,7 @@ $ python3 -m sparkbadge --help
 
 import argparse
 import sparkbadge
+from os.path import join, dirname
 
 
 def main():
@@ -45,7 +46,8 @@ def main():
     parser.add_argument(
         "-s",
         "--source",
-        help="The source forge. Defaults to source in .sparkbadge/spark.yml")
+        default="github",
+        help="The source forge (i.e. github or gitlab).")
     parser.add_argument(
         "-d",
         "--dir",
@@ -58,12 +60,14 @@ def main():
     timeframe = args.timeframe
     metrics = args.metrics
     source = args.source
-    spark_dir = args.dir
-    config = "spark.yml"
-
-    # Init
-    # sparkbadge.sparkbadge(uep, timeframe, metrics, source, spark_dir, config)
-    sparkbadge.sparkbadge(uep, timeframe, metrics, source, spark_dir, config)
+    spark_dir = (args.dir 
+                if parser.get_default("dir") 
+                else join(dirname(__file__), "../.sparkbadge"))
+    sparkbadge.sparkbadge(uep, 
+                          timeframe, 
+                          metrics, 
+                          source, 
+                          spark_dir)
 
 
 if __name__ == "__main__":

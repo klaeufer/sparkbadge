@@ -5,7 +5,7 @@ which can then be added to a github-style badge using pybadges or shields.io.
 """
 
 from os.path import join, dirname
-from typing import Callable
+from typing import Callable, Optional
 from functools import reduce 
 import yaml
 
@@ -89,12 +89,24 @@ def build_url(meta: dict,
     return url
 
 
-def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
+def sparkbadge(uep: str, 
+               timeframe: str, 
+               metric_type: str, 
+               source: str, 
+               spark_dir: str):
+    """Creates a longitudinal sparkline.
+    
+    Args:
+        uep: The ID or URL-encoded path of the project.
+        timeframe: The timeframe to create sparklines over.
+            See 'python -m sparkbadge' --help for more.
+        metric_type:
+        source: The source forge (i.e. github or gitlab).
+        spark_dir: Directory to store sparkbadges. Default is .sparkbadge/
     """
-    """
-
+    
     # Load the spark.yml config 
-    with open(spark_dir + "/" + config, 'r') as file:
+    with open(spark_dir + "/spark.yml" , 'r') as file:
         cfg = file.read()
     meta = yaml.safe_load(cfg)
     
@@ -116,5 +128,5 @@ def sparkbadge(uep, timeframe, metric_type, source, spark_dir, config):
 
 spark_dir = join(dirname(__file__), "../.sparkbadge")
 
-sparkbadge("facebook/react", "", "commits", "github", spark_dir, "spark.yml")
+sparkbadge("facebook/react", "", "commits", "github", spark_dir)
 # sparkbadge("", "", "commits", "gitlab", spark_dir, "spark.yml")
