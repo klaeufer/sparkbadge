@@ -1,0 +1,59 @@
+# === Sparkbadge Config ===
+
+# Describe parameters 
+config:
+  base_url:
+  uep: "facebook/react"
+  per_page: "" 
+  # Auth token names, located in .env
+  github: 
+    auth_token: null
+    base_url: "https://api.github.com/repos"
+  gitlab: 
+    auth_token: "GITLAB_API_TOKEN"
+    base_url: "https://gitlab.com/api/v4/projects"
+
+# Output params
+metrics:
+  github:
+    commits:
+      id: "sha"
+      url_suffix: null 
+      params:
+        authored_date: "commit.author.date"
+        committed_date: "commit.committer.date"
+        verified: "commit.verification.verified"
+    issues:
+      id: "id"
+      url_suffix: null 
+      params:
+        created_date: "created_at"
+        closed_date: "closed_at"
+        state: "state"
+    runs:
+      # NOTE: Weird: https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-repository
+      id: "workflow_runs.0.id"
+      url_suffix: "actions"
+      params:
+        status: "workflow_runs.0.status"
+        conclusion: "workflow_runs.0.conclusion"
+        created_date: "workflow_runs.0.created_at"
+  gitlab:
+    commits:
+      id: "id"
+      url_suffix: "repository" 
+      params:
+        authored_date: "authored_date"
+        committed_date: "committed_date"
+    issues:
+      id: "TODO"
+      url_suffix: "repository" 
+      params:
+    runs:
+      id: "id"
+      url_suffix: "repository" 
+      params:
+        status: "status"
+        created_date: "created_at"
+
+

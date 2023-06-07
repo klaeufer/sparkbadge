@@ -1,0 +1,28 @@
+name: Test badge updates on push
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pybadges
+    - name: Generate badge
+      run: |
+        mkdir -p .sparkbadge
+        python test_action.py
+    - name: Commit changes
+      run: |
+        git config user.email "nickesg44@gmail.com"
+        git config user.name "nshan651"
+        git add .sparkbadge/*.svg 
+        git commit -m "Added test_badge.svg"
+        git push
