@@ -1,5 +1,5 @@
 from typing import List, Tuple
-import drawSvg as draw
+import drawsvg as draw
 import numpy as np
 # For testing purposes
 import tempfile
@@ -59,7 +59,7 @@ def hist_trend(samples: List[int], stroke_color: str, stroke_width: int) -> str:
     return canvas.asSvg()
 
 
-def trend(samples: List[int], stroke_color: str, stroke_width: int) -> str | None:
+def trend(samples: List[int], stroke_color: str, stroke_width: int) -> str or None:
     canvas = draw.Drawing(WIDTH, HEIGHT, origin=(0, -Y_OFFSET))
     path = draw.Path(
         fill="transparent",
