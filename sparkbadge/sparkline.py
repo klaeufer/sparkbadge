@@ -59,7 +59,7 @@ def hist_trend(samples: List[int], stroke_color: str, stroke_width: int) -> str:
     return canvas.as_svg()
 
 
-def trend(samples: List[int], stroke_color: str, stroke_width: int) -> str or None:
+def trend(samples: List[int], stroke_color: str, stroke_width: int) -> str | None:
     canvas = draw.Drawing(WIDTH, HEIGHT, origin=(0, -Y_OFFSET))
     path = draw.Path(
         fill="transparent",
