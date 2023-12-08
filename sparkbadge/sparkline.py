@@ -1,5 +1,5 @@
 from typing import List, Tuple
-import drawSvg as draw
+import drawsvg as draw
 import numpy as np
 # For testing purposes
 import tempfile
@@ -56,7 +56,7 @@ def hist_trend(samples: List[int], stroke_color: str, stroke_width: int) -> str:
                   fill='none'))
 
     #return canvas.asDataUri()
-    return canvas.asSvg()
+    return canvas.as_svg()
 
 
 def trend(samples: List[int], stroke_color: str, stroke_width: int) -> str | None:
@@ -75,7 +75,7 @@ def trend(samples: List[int], stroke_color: str, stroke_width: int) -> str | Non
     canvas.append(path)
     
     #return canvas.asDataUri()
-    return canvas.asSvg()
+    return canvas.as_svg()
 
 
 def stacked_bar(samples, labels):
@@ -99,7 +99,7 @@ def stacked_bar(samples, labels):
         #canvas.append(draw.Rectangle(10*i, yy1, 10, yy2, fill='purple'))
     '''
 
-    canvas.saveSvg('/home/nick/dl/sbar.svg')
+    canvas.save_svg('../examples')
     #return canvas.asSvg()
 
 
